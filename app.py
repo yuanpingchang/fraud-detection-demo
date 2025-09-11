@@ -55,44 +55,13 @@ def rule_check_suspicious(tx):
 st.title("💳 AI + Rule Fraud Detection Demo")
 st.write("模擬交易紀錄，AI 與規則判斷可疑交易")
 
-# 7️⃣ 按鈕：產生新交易
+# 7️⃣ 輸入金額
+input_amount = st.text_input("輸入交易金額 (留空則隨機生成)")
+
+# 8️⃣ 按鈕：產生新交易
 if st.button("產生新交易"):
     sender = random.choice(accounts)
     receiver = random.choice(accounts + blacklist)
-    amount = random.randint(100, 200000)  # 模擬更大金額
-    tx = {
-        "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "from": sender,
-        "to": receiver,
-        "amount": amount,
-    }
-
-    # Rule 判斷
-    rule_flag, rule_reason = rule_check_suspicious(tx)
-    tx["rule_result"] = f"可疑: {rule_flag} | 原因: {rule_reason}" if rule_flag=="是" else "否"
-
-    # AI 判斷
-    tx["ai_result"] = ai_check_suspicious(tx)
-
-    st.session_state.transactions.insert(0, tx)
-
-# 8️⃣ 顯示交易紀錄
-st.subheader("📒 交易紀錄")
-st.dataframe(st.session_state.transactions)
-
-# 9️⃣ 顯示可疑提醒（Rule + AI）
-st.subheader("⚠️ 可疑帳號提醒")
-has_suspicious = False
-for tx in st.session_state.transactions:
-    suspicious_texts = []
-    if "是" in tx.get("rule_result",""):
-        suspicious_texts.append(f"規則判斷: {tx['rule_result']}")
-    if "是" in tx.get("ai_result",""):
-        suspicious_texts.append(f"AI判斷: {tx['ai_result']}")
-    if suspicious_texts:
-        st.warning(f"{tx['time']} | {tx['from']} -> {tx['to']} 金額 {tx['amount']} | " + " ; ".join(suspicious_texts))
-        has_suspicious = True
-
-if not has_suspicious:
-    st.success("目前無可疑交易 ✅")
+    try:
+        amount
 
