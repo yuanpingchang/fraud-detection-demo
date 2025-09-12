@@ -1,15 +1,11 @@
-# app.py
 import streamlit as st
 import os
 import random
 from datetime import datetime
-import openai
+from openai import OpenAI
 
-# 1️⃣ 從環境變數抓 OpenAI API Key
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-if OPENAI_API_KEY is None:
-    st.error("❌ API Key 未設定，請在 Streamlit Cloud 的 Secrets 裡加入 OPENAI_API_KEY")
-openai.api_key = OPENAI_API_KEY
+# 1️⃣ 初始化 OpenAI client
+client = OpenAI()
 
 # 2️⃣ 模擬帳號
 accounts = ["user001", "user002", "user003", "user004"]
@@ -21,7 +17,6 @@ if "transactions" not in st.session_state:
 
 # 4️⃣ 函數：AI 判斷可疑交易
 def ai_check_suspicious(tx):
-    client = openai.OpenAI()
     prompt = f"""
 你是一個金融詐欺檢測助手。
 請判斷以下交易是否可疑，並說明原因：
@@ -36,9 +31,9 @@ def ai_check_suspicious(tx):
 """
     try:
         response = client.chat.completions.create(
-            model="gpt-5-mini",
+            model="gpt-4.1-mini",  # ✅ 使用現有模型
             messages=[{"role": "user", "content": prompt}],
-            max_tokens=60
+            max_completion_tokens=60  # ✅ 改用 max_completion_tokens
         )
         result = response.choices[0].message.content.strip()
     except Exception as e:
@@ -63,7 +58,6 @@ if st.button("產生新交易"):
     sender = random.choice(accounts)
     receiver = random.choice(accounts + blacklist)
     
-    # ✅ 修正 try/except
     try:
         if input_amount.strip() != "":
             amount = int(input_amount)
@@ -93,7 +87,7 @@ if st.button("產生新交易"):
 st.subheader("📒 交易紀錄")
 st.dataframe(st.session_state.transactions)
 
-# 10️⃣ 顯示可疑提醒（Rule + AI）
+# 🔟 顯示可疑提醒（Rule + AI）
 st.subheader("⚠️ 可疑帳號提醒")
 has_suspicious = False
 for tx in st.session_state.transactions:
@@ -108,4 +102,3 @@ for tx in st.session_state.transactions:
 
 if not has_suspicious:
     st.success("目前無可疑交易 ✅")
-
