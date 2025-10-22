@@ -17,7 +17,7 @@ if st.button("更新今日股價資料"):
         # Step 1: 取得證交所資料
         api_url = "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL"
         st.info("正在下載台股資料...")
-        response = requests.get(api_url)
+        response = requests.get(api_url, verify=False)
         data = response.json()
         st.success(f"已取得 {len(data)} 筆資料")
 
