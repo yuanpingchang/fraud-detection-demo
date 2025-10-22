@@ -50,8 +50,6 @@ if st.button("更新今日股價資料", key="update_stock_data"):
             close_price = item.get("ClosingPrice")
 
             # 顯示目前處理的股票
-            st.write(f"🧩 正在檢查 {code} / 收盤價 {close_price}")
-            
             if not code or code not in valid_codes or not close_price or close_price == "--":
                 continue
 
