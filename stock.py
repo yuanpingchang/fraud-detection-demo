@@ -52,6 +52,7 @@ if st.button("更新今日股價資料", key="update_stock_data"):
         for item in data:
             code = item.get("Code")
             close_price = item.get("ClosingPrice")
+            name = item.get("Name")
 
             # 顯示目前處理的股票
             if not code or code not in valid_codes or not close_price or close_price == "--":
@@ -69,6 +70,7 @@ if st.button("更新今日股價資料", key="update_stock_data"):
             if stock_info:
                 skip_count += 1
                 #st.write(f"⏩ {code} 已經在 STOCK_DATA，略過")
+                st.info(f"已存在 {code}")
                 continue
 
             # 寫入新資料
@@ -87,7 +89,7 @@ if st.button("更新今日股價資料", key="update_stock_data"):
 
             if r.status_code in [200, 201]:
                insert_count += 1
-               st.success(f"✅ 已新增 {code}，收盤價 {close_price}")
+               st.success(f"✅ 已新增 {code} {name}，收盤價 {close_price}")
             else:
                st.error(f"❌ 寫入失敗，代碼 {code}")
 
