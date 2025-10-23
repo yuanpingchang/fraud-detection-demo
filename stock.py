@@ -70,7 +70,7 @@ if st.button("更新今日股價資料", key="update_stock_data"):
             if stock_info:
                 skip_count += 1
                 #st.write(f"⏩ {code} 已經在 STOCK_DATA，略過")
-                st.info(f"已存在 {code}")
+                st.info(f"已存在 {code} {name}")
                 continue
 
             # 寫入新資料
