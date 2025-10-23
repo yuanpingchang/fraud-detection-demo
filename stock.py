@@ -63,7 +63,7 @@ if st.button("更新今日股價資料", key="update_stock_data"):
             stock_info = check.json()
 
             # Debug：顯示查詢結果
-            st.text(f"🔎 查詢 STOCK_DATA params = {params}, 回傳: {stock_info}")
+            #st.text(f"🔎 查詢 STOCK_DATA params = {params}, 回傳: {stock_info}")
 
             # 如果 STOCK_DATA 查到這支股票，略過
             if stock_info:
