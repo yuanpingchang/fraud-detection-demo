@@ -20,7 +20,7 @@ headers = {
 
 # 🔄 新增「重載本頁」按鈕
 if st.button("🔁 重載本頁", key="reload_page"):
-    st.experimental_rerun()
+    st.rerun()
 
 # 按鈕：更新股價資料
 if st.button("更新今日股價資料", key="update_stock_data"):
