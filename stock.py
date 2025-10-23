@@ -54,17 +54,17 @@ if st.button("更新今日股價資料", key="update_stock_data"):
                 continue
 
             # 檢查是否已存在該股票的今日資料
-            params = {"STOCK_NO": f"eq.{code}"}
-            check = requests.get(f"{SUPABASE_URL}/rest/v1/STOCK_LIST", headers=headers, params=params)
+            params = {"STOCK_NO": f"eq.{code}", "DATE": f"eq.{today}"}
+            check = requests.get(f"{SUPABASE_URL}/rest/v1/STOCK_DATA", headers=headers, params=params)
             stock_info = check.json()
 
             # Debug：顯示查詢結果
-            st.text(f"🔎 查詢 STOCK_LIST params = {params}, 回傳筆數: {len(stock_info)}")
+            st.text(f"🔎 查詢 STOCK_DATA params = {params}, 回傳: {stock_info}")
 
             # 如果 STOCK_LIST 查不到這支股票，略過
             if not stock_info:
                 skip_count += 1
-                #st.write(f"⏩ {code} 不在 STOCK_LIST，略過")
+                #st.write(f"⏩ {code} 已經在 STOCK_DATA，略過")
                 continue
 
             # 寫入新資料
