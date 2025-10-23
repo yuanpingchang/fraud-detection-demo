@@ -70,7 +70,7 @@ if st.button("更新今日股價資料", key="update_stock_data"):
             # 寫入新資料
             payload = {
                 "STOCK_NO": code,
-                "Price": close_price,
+                "PRICE": close_price,
                 "DATE": today
             }
             # 顯示要寫入的內容
