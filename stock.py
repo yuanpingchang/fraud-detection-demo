@@ -73,9 +73,19 @@ if st.button("更新今日股價資料", key="update_stock_data"):
                 "Price": close_price,
                 "DATE": today
             }
+            # 顯示要寫入的內容
+            st.write(f"📝 嘗試寫入 STOCK_DATA：{payload}")
+
             r = requests.post(f"{SUPABASE_URL}/rest/v1/STOCK_DATA", headers=headers, json=payload)
+            # 顯示回傳狀態與內容
+            st.write(f"🔍 回應狀態碼: {r.status_code}")
+            st.write(f"🔍 回應內容: {r.text}")
+
             if r.status_code in [200, 201]:
-                insert_count += 1
+               insert_count += 1
+               st.success(f"✅ 已新增 {code}，收盤價 {close_price}")
+            else:
+               st.error(f"❌ 寫入失敗，代碼 {code}")
 
         st.success(f"✅ 新增 {insert_count} 筆資料，略過 {skip_count} 筆（已存在的）")
 
